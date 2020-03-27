@@ -37,4 +37,25 @@ defmodule TodoList do
   def entries(todo_list, date) do
     Map.get(todo_list, date)
   end
+
+  @spec add_entry(Map.t(), Date.t(), String.t()) :: Map.t()
+  @doc """
+  Returns a todo list with the entry added to the given date.
+  If the date is already present in the list, the item gets appended to the beginning of the list.
+  Otherwise, the date is created in the todo list.
+
+  ## Examples
+  ```
+  iex> blank_list = TodoList.new()
+  iex> list_with_new_entry = TodoList.add_entry(blank_list, ~D[2020-05-24], \"Do homework\")
+  %{~D[2020-05-24] => [\"Do homework\"]}
+  iex> list_with_another_date = TodoList.add_entry(list_with_new_entry, ~D[2020-05-25], \"Schedule meeting\")
+  %{~D[2020-05-24] => [\"Do homework\"], ~D[2020-05-25] => [\"Schedule meeting\"]}
+  iex> list_with_another_entry = TodoList.add_entry(list_with_new_entry, ~D[2020-05-24], \"Watch anime\")
+  %{~D[2020-05-24] => [\"Do homework\", \"Watch anime\"]}
+  ```
+  """
+  def add_entry(todo_list, date, item) do
+    Map.update(todo_list, date, [item], fn titles -> [item | titles] end)
+  end
 end
