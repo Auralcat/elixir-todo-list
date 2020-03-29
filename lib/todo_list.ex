@@ -38,24 +38,25 @@ defmodule TodoList do
     MultiDict.get(todo_list, date)
   end
 
-  @spec add_entry(Map.t(), Date.t(), String.t()) :: Map.t()
+  @spec add_entry(Map.t(), Map.t()) :: Map.t()
   @doc """
-  Returns a todo list with the entry added to the given date.
+  Returns a todo list with the entry added to the given date. The entry is passed as a `Map`.
+
   If the date is already present in the list, the item gets appended to the beginning of the list.
   Otherwise, the date is created in the todo list.
 
   ## Examples
   ```
   iex> blank_list = TodoList.new()
-  iex> list_with_new_entry = TodoList.add_entry(blank_list, ~D[2020-05-24], \"Do homework\")
+  iex> list_with_new_entry = TodoList.add_entry(blank_list, %{date: ~D[2020-05-24], title: \"Do homework\"})
   %{~D[2020-05-24] => [\"Do homework\"]}
-  iex> list_with_another_date = TodoList.add_entry(list_with_new_entry, ~D[2020-05-25], \"Schedule meeting\")
+  iex> list_with_another_date = TodoList.add_entry(list_with_new_entry, %{date: ~D[2020-05-25], title: \"Schedule meeting\"})
   %{~D[2020-05-24] => [\"Do homework\"], ~D[2020-05-25] => [\"Schedule meeting\"]}
-  iex> list_with_another_entry = TodoList.add_entry(list_with_new_entry, ~D[2020-05-24], \"Watch anime\")
+  iex> list_with_another_entry = TodoList.add_entry(list_with_new_entry, %{date: ~D[2020-05-24], title: \"Watch anime\"})
   %{~D[2020-05-24] => [\"Do homework\", \"Watch anime\"]}
   ```
   """
-  def add_entry(todo_list, date, item) do
-    MultiDict.add(todo_list, date, item)
+  def add_entry(todo_list, %{date: date, title: title}) do
+    MultiDict.add(todo_list, date, title)
   end
 end
