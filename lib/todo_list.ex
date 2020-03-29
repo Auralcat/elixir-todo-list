@@ -35,7 +35,7 @@ defmodule TodoList do
   ```
   """
   def entries(todo_list, date) do
-    Map.get(todo_list, date)
+    MultiDict.get(todo_list, date)
   end
 
   @spec add_entry(Map.t(), Date.t(), String.t()) :: Map.t()
@@ -56,6 +56,6 @@ defmodule TodoList do
   ```
   """
   def add_entry(todo_list, date, item) do
-    Map.update(todo_list, date, [item], fn titles -> [item | titles] end)
+    MultiDict.add(todo_list, date, item)
   end
 end
